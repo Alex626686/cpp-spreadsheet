@@ -45,10 +45,7 @@ Cell* Sheet::GetCell(Position pos) {
     if (!table_.count(pos)) {
         return nullptr;
     }
-    Cell* cell = table_.at(pos).get();/*
-    if (cell->GetText().size() == 0) {
-        return nullptr;
-    }*/
+    Cell* cell = table_.at(pos).get();
     return cell;
 }
 
