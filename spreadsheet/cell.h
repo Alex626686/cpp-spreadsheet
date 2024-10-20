@@ -105,6 +105,7 @@ private:
 
     bool HasCyclic_Dependencies(Impl& impl) const;
     void InvalidateCache();
+    void ProcessingDependentCells();
 
     std::unique_ptr<Impl> impl_;
     Sheet& sheet_;

@@ -31,25 +31,11 @@ void Cell::Set(std::string text) {
 	}
 	impl_ = std::move(tmp_impl);
 	InvalidateCache();
-
-	for (Cell* r_cell : r_cells_) {
-		r_cell->l_cells_.erase(this);
-	}
-	r_cells_.clear();
-
-	for (const auto& pos : impl_->GetReferencedCells()) {
-		Cell* r_cell = sheet_.GetCell(pos);
-		if (!r_cell) {
-			sheet_.SetCell(pos, "");
-			r_cell = sheet_.GetCell(pos);
-		}
-		r_cells_.insert(r_cell);
-		r_cell->l_cells_.insert(this);
-	}
+	ProcessingDependentCells();
 }
 
 void Cell::Clear() {
-	impl_ = std::make_unique<EmptyImpl>();
+	Set("");
 }
 
 Cell::Value Cell::GetValue() const {
@@ -99,4 +85,21 @@ void Cell::InvalidateCache(){
 			incoming->InvalidateCache();
 		}
 	}	
+}
+
+void Cell::ProcessingDependentCells(){
+	for (Cell* r_cell : r_cells_) {
+		r_cell->l_cells_.erase(this);
+	}
+	r_cells_.clear();
+
+	for (const auto& pos : impl_->GetReferencedCells()) {
+		Cell* r_cell = sheet_.GetCell(pos);
+		if (!r_cell) {
+			sheet_.SetCell(pos, "");
+			r_cell = sheet_.GetCell(pos);
+		}
+		r_cells_.insert(r_cell);
+		r_cell->l_cells_.insert(this);
+	}
 }

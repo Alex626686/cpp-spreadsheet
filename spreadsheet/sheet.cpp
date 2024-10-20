@@ -11,10 +11,14 @@ using namespace std::literals;
 
 Sheet::~Sheet() {}
 
-void Sheet::SetCell(Position pos, std::string text) {
+void ValidCheck(Position pos) {
     if (!pos.IsValid()) {
         throw InvalidPositionException("Invalid position");
     }
+}
+
+void Sheet::SetCell(Position pos, std::string text) {
+    ValidCheck(pos);
     if (!table_.count(pos)) {
         table_.emplace(pos, std::make_unique<Cell>(*this));
         ++rows_map[pos.row];
@@ -24,10 +28,7 @@ void Sheet::SetCell(Position pos, std::string text) {
 }
 
 const Cell* Sheet::GetCell(Position pos) const {
-    if (!pos.IsValid()) {
-        throw InvalidPositionException("Invalid position");
-    }
-
+    ValidCheck(pos);
     if (!table_.count(pos)) {
         return nullptr;
     }
@@ -38,10 +39,7 @@ const Cell* Sheet::GetCell(Position pos) const {
     return cell;
 }
 Cell* Sheet::GetCell(Position pos) {
-    if (!pos.IsValid()) {
-        throw InvalidPositionException("Invalid position");
-    }
-
+    ValidCheck(pos);
     if (!table_.count(pos)) {
         return nullptr;
     }
@@ -50,9 +48,7 @@ Cell* Sheet::GetCell(Position pos) {
 }
 
 void Sheet::ClearCell(Position pos) {
-    if (!pos.IsValid()) {
-        throw InvalidPositionException("Invalid position");
-    }
+    ValidCheck(pos);
     const auto& table_it = table_.find(pos);
     size_t refs_count = 1;
     if (table_it != table_.end() && table_it->second != nullptr) {
