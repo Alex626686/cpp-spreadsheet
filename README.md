@@ -7,3 +7,12 @@
 - Возможность использования формул с числами, строками и ссылками на другие ячейки
 - Автоматическое обновление значений ячеек при изменении зависимых ячеек
 - Обработка циклических зависимостей и ошибок в формулах
+
+## Инструкция по развёртыванию с помощью Cmake
+
+Для сборки этого проекта вам необходимо:<br>
+1. Установить [Java SE Runtime Environment 8.](https://www.oracle.com/java/technologies/javase-jre8-downloads.html)<br>
+2. Установить [ANTLR](https://www.antlr.org/)<br>
+3. Проверить в файлах FindANTLR.cmake и CMakeLists.txt название файла antlr-X.X.X-complete.jar на корректность версии. Вместо "X.X.X" указать свою версию antlr<br>
+4. Создайть папку с названием "antlr4_runtime" без кавычек и скачайть в неё [файлы.](https://github.com/antlr/antlr4/tree/master/runtime/Cpp)<br>
+5. Запустить cmake build с CMakeLists.txt<br>
